@@ -324,6 +324,65 @@ SKU-1005,85,10,40,36.0,20
 
 ---
 
+## 👥 Contributors & Core Team
+
+| Contributor | Role | GitHub | Key Responsibilities |
+| :--- | :--- | :--- | :--- |
+| **Neel Belsare** | Full-Stack Architect & Core Developer | [@Neel-Belsare](https://github.com/Neel-Belsare) | Backend architecture, calculation engine, database schema, React dashboard UI, visual system diagrams |
+| **Mansi Gaike** | Project Owner & Systems/Docs Lead | [@gaikemansi03-sketch](https://github.com/gaikemansi03-sketch) | Repository ownership, functional specifications, technical documentation, API specifications, QA validation |
+
+### 🛠️ Task & Contribution Breakdown
+
+#### 🔹 Neel Belsare ([@Neel-Belsare](https://github.com/Neel-Belsare))
+- **System Architecture & Design**:
+  - Designed the end-to-end full-stack decoupled architecture integrating the React frontend, Flask analytical microservice, and Supabase PostgreSQL data layer.
+  - Formulated the repository directory structure (`backend/`, `frontend/`, `database/`, `docs/`).
+- **Backend Analytics Engine (`backend/app.py`)**:
+  - Engineered the analytical calculation pipeline (`calculate_inventory_metrics`):
+    - Real-time usable available stock computation (`current_inventory_count - committed_stock_count`).
+    - Dynamic operational hourly burn rate and runout time estimation based on daily demand velocity.
+    - Automated stockout vulnerability identification comparing runout time against supplier lead times (`runout_time <= supplier_lead_time`).
+    - Priority-based action rule hierarchy (Immediate Out-of-Stock, Critical Low Stock, High Priority Expedite, Caution, and Healthy stock).
+  - Implemented defensive data sanitization routines (`safe_int`, `safe_float`) protecting against missing or corrupt inputs.
+- **RESTful API Service (`backend/app.py`)**:
+  - Built Flask REST endpoints: `/upload` (batch payload ingestion), `/process-inventory` (metric calculation trigger), `/inventory` (data retrieval), and `/delete-all` (safe purge).
+  - Configured CORS cross-origin handling and environment variable management via `python-dotenv`.
+- **Database Architecture & Policies (`database/schema.sql`)**:
+  - Authored PostgreSQL DDL defining persistent `inventory` and session-isolated `inventory_temp` tables.
+  - Structured database performance indexes for optimized querying on `session_id`, `process_status`, and `product_id`.
+  - Implemented Row Level Security (RLS) policies and automatic `moddatetime` timestamp triggers.
+- **Frontend Dashboard Development (`frontend/src/`)**:
+  - Built the React 18 dashboard interface featuring 4 key executive KPI summary cards (Total Products, Low Stock Items, In-Transit Volume, Products at Risk).
+  - Implemented the color-coded inventory risk matrix with dynamic badge assignment (🔴 High Risk, 🟢 Low Risk, 🚨 Critical, etc.).
+  - Built client-side Excel/CSV parsing engine with `xlsx` (SheetJS) and drag-and-drop file ingestion with `react-dropzone`.
+  - Created service bridge (`frontend/src/services/supabase.js`) coordinating ingestion, metric calculation, and data polling.
+  - Implemented interactive UX safeguards including deletion confirmation modals and toast feedback (`react-hot-toast`).
+- **Documentation & Visual Architecture**:
+  - Created detailed Mermaid flowchart and sequence flow architectural diagrams.
+  - Documented mathematical formulations for stock calculation models.
+  - Captured and integrated application user interface screenshots.
+
+#### 🔹 Mansi Gaike ([@gaikemansi03-sketch](https://github.com/gaikemansi03-sketch))
+- **Repository Setup & Management**:
+  - Created and maintained the core repository (`gaikemansi03-sketch/inventory-flow-engine`).
+  - Managed version control settings, branches, and collaborator access.
+- **Product Definition & Functional Requirements**:
+  - Defined business problem statement, core system objectives, and functional workflows for supply chain inventory tracking.
+  - Specified key metrics required for stock replenishment operations (Available Stock, Lead Time vs. Burn Rate, Safety Stock thresholds).
+  - Outlined requirement specifications for file ingestion formats (.xlsx, .xls, .csv) and column mappings.
+  - Defined status badge categorization criteria and user-facing action recommendations.
+- **Technical Documentation & Project Specification**:
+  - Authored initial project documentation and developer onboarding blueprints.
+  - Documented system prerequisites (Python 3.9+, Node.js 16+, Supabase setup).
+  - Produced comprehensive REST API specifications detailing endpoints, request payloads, and response structures.
+  - Formatted data ingestion templates, sample datasets, and schema field descriptions.
+- **Quality Assurance & Workflow Validation**:
+  - Conducted end-to-end testing of file ingestion across various spreadsheet schemas and row counts.
+  - Verified edge cases in calculation metrics (e.g., zero available stock, lead-time mismatch, null field fallbacks).
+  - Validated frontend dashboard states, including empty states, loading indicators, and notification toasts.
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please follow these steps:
@@ -338,3 +397,4 @@ Contributions are welcome! Please follow these steps:
 ## 📜 License
 
 This project is open source and available under the [MIT License](LICENSE).
+
